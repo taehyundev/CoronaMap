@@ -1,41 +1,34 @@
-import React, { Component } from 'react';
-import Crowling from './components/crowling';
-import Floats from './components/floats';
-import Maps from './components/maps';
+import React from 'react';
+import logo from './logo.svg';
 import './App.css';
 
-class App extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      maps: { id: 'map' },
-      apikey: { kakao: process.env.REACT_APP_KAKAOMAP_API_KEY }
+class App extends React.Component {
+   constructor(props) {
+       super(props);
+       this.state = {
+        username:null
+       };
+     }
+     componentDidMount() {
+        fetch('http://localhost:3000/api')
+      .then(res=>res.json())
+      .then(data=>this.setState({username:data.username}));
     }
-  }
-  componentDidMount() {
-    const { kakao } = window;
-    const script = document.createElement('script');
-    script.async = true;
-    script.src = "https://dapi.kakao.com/v2/maps/sdk.js?appkey=9a0a184be7e43c187ef39272a06c9bf6";
-    document.head.appendChild(script);
-    script.onload = () => {
-      kakao.maps.load(() => {
-        let el = document.getElementById('map');
-        var map = new kakao.maps.Map(el, {
-          center: new kakao.maps.LatLng(36.82385366924311, 127.29662610855718),
-          level: 13
-        });
-      });
-    }
-  }
-    render() {
+   render() {
+      const {username} = this.state;
       return (
         <div className="App">
-          <Maps id={this.state.maps.id}></Maps>
-          <Crowling></Crowling>
-          <Floats></Floats>
+        <header className="App-header">
+        {username ? `${username[0]}` :"값이 안넘어온다."}
+        {username ? `${username[1]}` :"값이 안넘어온다."}
+        {username ? `${username[2]}` :"값이 안넘어온다."}
+        {username ? `${username[3]}` :"값이 안넘어온다."}
+        </header>
         </div>
       );
+       ;
+      }
     }
-  }
-  export default App;
+
+
+export default App;
